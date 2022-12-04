@@ -3,12 +3,21 @@ import sys
 import skimage.io
 import os
 
+import setup
 
 path_to_script = Path("~/projects/scaffan/").expanduser()
 sys.path.insert(0, str(path_to_script))
 import scaffan.image
 import imma.image
 
+
+def delete_content_folders():
+    """
+    Deletes content from folders
+    :return:
+    """
+    setup.delete_content_folder(os.path.join(Path(__file__).parent, "images"))
+    setup.delete_content_folder(os.path.join(Path(__file__).parent, "COCO_dataset"))
 
 def get_filenames(path: Path):
     """
@@ -40,6 +49,10 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
     :param imgs_directory_name: Name of images directory
     :return: None
     """
+
+    delete_content_folders()
+    setup.delete_zip_files()
+
     images_directory = create_directory(imgs_directory_name)
 
     czi_files_names = get_filenames(czi_directory_path)
@@ -68,7 +81,7 @@ def define_category(categories: list):
     :param categories:
     :return:
     """
-    txt_file_path = os.path.join(Path(__file__).parent, "../images", "categories.txt")
+    txt_file_path = os.path.join(Path(__file__).parent, "images", "categories.txt")
     with open(txt_file_path, 'w') as f:
         f.write('\n'.join(categories))
     f.close()

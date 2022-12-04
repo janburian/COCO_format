@@ -8,6 +8,7 @@ import glob
 import json
 import shutil
 import ntpath
+import zipfile
 
 path_to_script = Path("~/projects/scaffan/").expanduser()
 sys.path.insert(0, str(path_to_script))
@@ -279,8 +280,13 @@ def copy_images(source_dir: Path, COCO_dir_name: str):
     :param COCO_dir_name: Name of COCO dataset directory
     :return:
     """
-    os.mkdir(os.path.join(Path(__file__).parent, COCO_dir_name, "../images"))
-    destination_dir = os.path.join(Path(__file__).parent, COCO_dir_name, "../images")
+
+    dir = os.path.join(Path(__file__).parent, COCO_dir_name, "images")
+    if os.path.exists(dir):
+        shutil.rmtree(dir)
+    os.mkdir(dir)
+
+    destination_dir = os.path.join(Path(__file__).parent, COCO_dir_name, "images")
 
     images_names = list(Path(source_dir).glob('*.jpg'))
 
@@ -292,7 +298,6 @@ def copy_images(source_dir: Path, COCO_dir_name: str):
             shutil.copy(full_file_name, destination_dir)
             index += 1
 
-
 def create_COCO_dataset(czi_files_directory: Path, images_directory: Path, COCO_name: str):
     """
     Creates COCO dataset
@@ -301,6 +306,7 @@ def create_COCO_dataset(czi_files_directory: Path, images_directory: Path, COCO_
     :param COCO_name: Name of COCO dataset directory
     :return:
     """
+
     name_json = "trainval.json"
     json_COCO = create_COCO_json(czi_files_directory, images_directory)
 
@@ -312,3 +318,13 @@ def create_COCO_dataset(czi_files_directory: Path, images_directory: Path, COCO_
         f.close()
 
     copy_images(images_directory, COCO_name)
+
+
+def create_zip_directory(directory_to_zip: Path, zip_dir_name):
+    with zipfile.ZipFile(os.path.join(Path(__file__).parent, zip_dir_name), mode='w') as zipf:
+        len_dir_path = len(directory_to_zip)
+        for root, _, files in os.walk(directory_to_zip):
+            for file in files:
+                file_path = os.path.join(root, file)
+                zipf.write(file_path, file_path[len_dir_path:])
+    zipf.close()
