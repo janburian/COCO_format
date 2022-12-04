@@ -13,7 +13,6 @@ import imma.image
 def get_filenames(path: Path):
     """
     Returns list of filenames
-
     :param path: path to directory
     :return: list of filenames
     """
@@ -64,6 +63,11 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
 
 
 def define_category(categories: list):
+    """
+    Creates .txt file with categories
+    :param categories:
+    :return:
+    """
     txt_file_path = os.path.join(Path(__file__).parent, "../images", "categories.txt")
     with open(txt_file_path, 'w') as f:
         f.write('\n'.join(categories))

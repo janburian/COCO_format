@@ -16,6 +16,19 @@ from datetime import date
 
 
 def get_image_properties(jpg_dataset_directory: Path):
+    """
+    Returns the properties of the images (list of dictionaries) which are obligatory in COCO data format
+    For example (properties of one image):
+        image {
+            "id": int,
+            "width": int,
+            "height": int,
+            "file_name": str,
+        }
+
+    :param jpg_dataset_directory: path to .jpg images
+    :return: list of dictionaries
+    """
     image_name = 0
     list_image_dictionaries = []
     image_name_id = 0
@@ -47,7 +60,7 @@ def get_image_properties(jpg_dataset_directory: Path):
     return list_image_dictionaries
 
 
-def get_category_properties(dataset_directory, filename):
+def get_category_properties(dataset_directory: Path, filename: str):
     """
     Returns properties of category (list of dictionaries)
     It can read categories from .txt file, if each category is on a single line without commas
@@ -58,12 +71,9 @@ def get_category_properties(dataset_directory, filename):
             "supercategory": str,
         }
 
-    Parameters:
-    -----------
-    jpg_dataset_directory : Path
-                        directory of the image dataset
-    filename : str
-               filename of the .txt file which is in the same file as dataset
+    :param dataset_directory: path to .jpg images
+    :param filename: filename of .txt file
+    :return: list of dictionaries
     """
     list_category_dictionaries = []
     with open(str(dataset_directory) + "\\" + filename) as f:
@@ -86,16 +96,15 @@ def get_category_properties(dataset_directory, filename):
 def count_polygon_area(x, y):
     """
     Counts the area of an polygon
+    :param x: np.array(x_px_list)
+    :param y: np.array(y_px_list)
 
-    Parameters:
-    -----------
-    x : np.array(x_px_list),
-    y : np.array(y_px_list)
+    :return: area
     """
     return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
 
-def get_annotations_properties(czi_files_directory, pixelsize_mm):
+def get_annotations_properties(czi_files_directory: Path, pixelsize_mm: list):
     """
     Returns the properties of the annotations (list of dictionaries)
     One dictionary = object instance annotation
@@ -110,15 +119,9 @@ def get_annotations_properties(czi_files_directory, pixelsize_mm):
             "iscrowd": 0 or 1,
         }
 
-    Parameters:
-    -----------
-    czi_files_directory : Path
-                          path to .czi files directory
-    annotation_names : list
-                      list which includes names of uploaded annotations
-    pixelsize_mm : list
-                   defines pixelsize in mm (e.g. pixelsize = [[0.0003, 0.0003])
-
+    :param czi_files_directory: path to .czi files directory
+    :param pixelsize_mm: defines pixelsize in mm (e.g. pixelsize = [[0.0003, 0.0003])
+    :return: list of dictionaries
     """
 
     index = 0
@@ -189,15 +192,14 @@ def get_annotations_properties(czi_files_directory, pixelsize_mm):
     return list_annotation_dictionaries
 
 
-def get_info_dictionary(version, description, contributor):
+def get_info_dictionary(version: str, description: str, contributor: str):
     """
     Returns dictionary with the basic information related to COCO dataset
 
-    Parameters:
-    -----------
-    version : str
-    description : str
-    contributor : str
+    :param version: str
+    :param description: str
+    :param contributor: str
+    :return: info dictionary
     """
 
     info_dictionary = {
@@ -212,6 +214,12 @@ def get_info_dictionary(version, description, contributor):
 
 
 def create_COCO_json(czi_directory: Path, images_directory: Path):
+    """
+    Creates dictionary (json) which is obligatory for COCO dataset
+    :param czi_directory: Path to .czi files directory
+    :param images_directory: Path to .jpg files directory
+    :return: Dictionary
+    """
 
     data = {}
 
@@ -253,13 +261,24 @@ def create_COCO_json(czi_directory: Path, images_directory: Path):
 
     return data
 
-def create_directory(directory_name):
+def create_directory(directory_name: str):
+    """
+    Creates directory with specified directory name
+    :param directory_name:
+    :return:
+    """
     files_directory = os.path.join(Path(__file__).parent, directory_name)
     if not os.path.exists(files_directory):
         os.makedirs(files_directory, exist_ok=True)
     return files_directory
 
-def copy_images(source_dir: str, COCO_dir_name: str):
+def copy_images(source_dir: Path, COCO_dir_name: str):
+    """
+    Copies images from source directory to COCO directory
+    :param source_dir: Path to source directory (Path)
+    :param COCO_dir_name: Name of COCO dataset directory
+    :return:
+    """
     os.mkdir(os.path.join(Path(__file__).parent, COCO_dir_name, "../images"))
     destination_dir = os.path.join(Path(__file__).parent, COCO_dir_name, "../images")
 
@@ -275,6 +294,13 @@ def copy_images(source_dir: str, COCO_dir_name: str):
 
 
 def create_COCO_dataset(czi_files_directory: Path, images_directory: Path, COCO_name: str):
+    """
+    Creates COCO dataset
+    :param czi_files_directory: Path to .czi files directory
+    :param images_directory: Path to .jpg files directory
+    :param COCO_name: Name of COCO dataset directory
+    :return:
+    """
     name_json = "trainval.json"
     json_COCO = create_COCO_json(czi_files_directory, images_directory)
 
