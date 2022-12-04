@@ -64,7 +64,7 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
 
 
 def define_category(categories: list):
-    txt_file_path = os.path.join(Path(__file__).parent, "images", "categories.txt")
+    txt_file_path = os.path.join(Path(__file__).parent, "../images", "categories.txt")
     with open(txt_file_path, 'w') as f:
         f.write('\n'.join(categories))
     f.close()

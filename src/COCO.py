@@ -260,8 +260,8 @@ def create_directory(directory_name):
     return files_directory
 
 def copy_images(source_dir: str, COCO_dir_name: str):
-    os.mkdir(os.path.join(Path(__file__).parent, COCO_dir_name, "images"))
-    destination_dir = os.path.join(Path(__file__).parent, COCO_dir_name, "images")
+    os.mkdir(os.path.join(Path(__file__).parent, COCO_dir_name, "../images"))
+    destination_dir = os.path.join(Path(__file__).parent, COCO_dir_name, "../images")
 
     images_names = list(Path(source_dir).glob('*.jpg'))
 

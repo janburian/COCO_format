@@ -1,11 +1,8 @@
 from pathlib import Path
 import os
-import json
 
 # Modules import
-import czi_to_jpg
-import COCO
-
+from src import COCO, czi_to_jpg
 
 if __name__ == '__main__':
 
@@ -19,5 +16,5 @@ if __name__ == '__main__':
     czi_to_jpg.define_category(["cell nucleus"])
 
     # Creating COCO
-    data = COCO.create_COCO_dataset(path_annotations, os.path.join(Path(__file__).parent, "images"), "COCO")
+    data = COCO.create_COCO_dataset(path_annotations, os.path.join(Path(__file__).parent, "../images"), "COCO")
     print()
