@@ -1,2 +1,5 @@
 
 *.jpg
+*.zip
+src/images/categories.txt
+src/COCO_dataset/trainval.json
