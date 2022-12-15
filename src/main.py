@@ -1,22 +1,29 @@
 from pathlib import Path
 import os
+import argparse
 
 # Modules import
 import COCO, czi_to_jpg
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        prog='COCO format',
+        description='Creates COCO from .czi files',
+        epilog='Write a path to directory, where .czi files with annotations are saved.')
+    parser.add_argument('-p', '--path', metavar='path', type=str,
+                        help='a path to directory, where .czi files with annotations are saved')
+
+    args = parser.parse_args()
 
     # Loading .czi annotations
     '''
-     path_annotations = Path(
-        r"G:\.shortcut-targets-by-id\1IVZeSnsqd_jKJBXN8-AfD6JqiQ14QWVX\Anicka - reticular fibers\J7_5"
-    )  # path to main directory, that is where .czi files are
-
-    '''
-
     path_annotations = Path(
         r"H:\BP\data\dataset_blue\czi_files_train"
     )  # path to main directory, that is where .czi files are
+    '''
+
+    # From CMD
+    path_annotations = args.path
 
     if os.path.exists(path_annotations):
         # Creating .jpg dataset
