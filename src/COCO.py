@@ -38,11 +38,11 @@ def get_image_properties(jpg_dataset_directory: Path):
 
     index = 0
     while index < len(images_names):
-        filename_string = os.path.join(jpg_dataset_directory, images_names[index])
-        filename_path = Path(filename_string)
+        #filename_string = os.path.join(jpg_dataset_directory, images_names[index])
+        filename_path = images_names[index]
         if not filename_path.exists():
             break
-        image = skimage.io.imread(filename_string)
+        image = skimage.io.imread(str(filename_path))
         height = image.shape[0]
         width = image.shape[1]
 
@@ -292,10 +292,10 @@ def copy_images(source_dir: Path, COCO_dir_name: str):
 
     index = 0
     while index < len(images_names):
-        image_name = images_names[index]
-        full_file_name = os.path.join(source_dir, image_name)
-        if os.path.exists(full_file_name):
-            shutil.copy(full_file_name, destination_dir)
+        image_name_path = images_names[index]
+        #full_file_name = os.path.join(source_dir, image_name)
+        if os.path.exists(image_name_path):
+            shutil.copy(image_name_path, destination_dir)
             index += 1
 
 def create_COCO_dataset(czi_files_directory: Path, images_directory: Path, COCO_name: str):

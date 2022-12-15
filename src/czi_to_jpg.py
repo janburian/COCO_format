@@ -8,7 +8,6 @@ import setup
 path_to_script = Path("~/projects/scaffan/").expanduser()
 sys.path.insert(0, str(path_to_script))
 import scaffan.image
-import imma.image
 
 
 def delete_content_folders():
@@ -19,13 +18,14 @@ def delete_content_folders():
     setup.delete_content_folder(os.path.join(Path(__file__).parent, "images"))
     setup.delete_content_folder(os.path.join(Path(__file__).parent, "COCO_dataset"))
 
-def get_filenames(path: Path):
+def get_filenames(path: Path, accepted_extensions: list):
     """
     Returns list of filenames
     :param path: path to directory
+    :param accepted_extensions:
     :return: list of filenames
     """
-    filenames = os.listdir(path)
+    filenames = [fn for fn in os.listdir(path) if fn.split(".")[-1] in accepted_extensions]
 
     return filenames
 
@@ -55,7 +55,7 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
 
     images_directory = create_directory(imgs_directory_name)
 
-    czi_files_names = get_filenames(czi_directory_path)
+    czi_files_names = get_filenames(czi_directory_path, ["czi"])
 
     index = 0
     while index < len(czi_files_names):
