@@ -3,7 +3,10 @@ import sys
 import skimage.io
 import os
 
-import setup
+try:
+    import setup
+except ImportError:
+    from . import setup
 
 path_to_script = Path("~/projects/scaffan/").expanduser()
 sys.path.insert(0, str(path_to_script))
@@ -67,12 +70,14 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
 
         anim = scaffan.image.AnnotatedImage(path=fn_str)
 
+        #print(anim.annotations)
         view = anim.get_full_view(
             pixelsize_mm=[0.0003, 0.0003]
         )  # wanted pixelsize in mm in view
         img = view.get_raster_image()
         skimage.io.imsave(os.path.join(images_directory, str(index).zfill(4) + ".jpg"), img)
         index += 1
+
 
 
 def define_category(categories: list):
