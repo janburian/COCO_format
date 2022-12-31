@@ -187,7 +187,7 @@ def get_annotations_properties(czi_files_directory: Path, pixelsize_mm: list):
             annotation_id += 1
             image_id += 1
             list_annotation_dictionaries.append(annotation_dictionary)
-            
+
         index += 1
 
     return list_annotation_dictionaries

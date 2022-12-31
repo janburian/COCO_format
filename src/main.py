@@ -7,23 +7,30 @@ import COCO, czi_to_jpg
 
 if __name__ == '__main__':
     '''
-     parser = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         prog='COCO format',
         description='Creates COCO from .czi files',
-        epilog='Write a path to directory, where .czi files with annotations are saved.')
-    parser.add_argument('-p', '--path', metavar='path', type=str,
+        epilog='Write a path to directory, where .czi files with annotations are saved.'
+     )
+
+    parser.add_argument('-p', '--path_czi', metavar='path_czi', type=str,
                         help='a path to directory, where .czi files with annotations are saved')
+
+    parser.add_argument('-s', '--path_COCO', metavar='path_COCO', type=str,
+                        help='a path to directory, where COCO will be saved')
 
     args = parser.parse_args()
     
     # From CMD
-    path_annotations = args.path
+    path_annotations = args.path_czi
+    path_COCO = args.path_COCO
     '''
 
     # Loading .czi annotations
     path_annotations = Path(
         r"G:\Můj disk\reticular_fibers_testovaci"
     )  # path to main directory, that is where .czi files are
+    path_COCO = r"C:\Users\janbu\Desktop"
 
     if os.path.exists(path_annotations):
         # Creating .jpg dataset
@@ -32,7 +39,8 @@ if __name__ == '__main__':
 
         # Creating COCO
         data = COCO.create_COCO_dataset(path_annotations, os.path.join(Path(__file__).parent, "images"), "COCO_dataset")
-        COCO.create_zip_directory(os.path.join(Path(__file__).parent, "COCO"), ("COCO_dataset.zip"))
+        COCO.create_zip_directory(path_COCO, "COCO_dataset.zip")
         print()
+
     else:
         print(f" Path: {path_annotations} does not exist.")
