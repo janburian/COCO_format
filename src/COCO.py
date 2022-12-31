@@ -144,7 +144,8 @@ def get_annotations_properties(czi_files_directory: Path, pixelsize_mm: list):
         view = anim.get_full_view(
             pixelsize_mm=[0.0003, 0.0003]
         )  # wanted pixelsize in mm in view
-        annotations = view.annotations
+        view = anim.get_views([0])
+        annotations = view[0].annotations
 
         for j in range(len(annotations)):
             xy_px_list = []
@@ -184,10 +185,9 @@ def get_annotations_properties(czi_files_directory: Path, pixelsize_mm: list):
                 "iscrowd": 0,
             }
             annotation_id += 1
-
+            image_id += 1
             list_annotation_dictionaries.append(annotation_dictionary)
-
-        image_id += 1
+            
         index += 1
 
     return list_annotation_dictionaries

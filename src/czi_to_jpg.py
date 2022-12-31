@@ -61,6 +61,7 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
     czi_files_names = get_filenames(czi_directory_path, ["czi"])
 
     index = 0
+    counter = 0
     while index < len(czi_files_names):
         fn_path = Path(os.path.join(Path(__file__).parent, czi_directory_path, czi_files_names[index]))
         fn_str = str(fn_path)
@@ -70,14 +71,23 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
 
         anim = scaffan.image.AnnotatedImage(path=fn_str)
 
-        #get_smaller_czi(fn_str) # testovaci volani metody
+        for idx in range(len(anim.annotations)):
+            view = anim.get_views([idx])  # vybiram, jakou chci zobrazit anotaci
+            img = view[0].get_raster_image()
+            skimage.io.imsave(os.path.join('C:\\Users\\janbu\\GitHub\\COCO_format\\src\\images', str(counter).zfill(4) + ".jpg"), img)
+            counter += 1
+            idx += 1
+
+        '''
         #print(anim.annotations)
         view = anim.get_full_view(
             pixelsize_mm=[0.0003, 0.0003]
         )  # wanted pixelsize in mm in view
         img = view.get_raster_image()
         skimage.io.imsave(os.path.join(images_directory, str(index).zfill(4) + ".jpg"), img)
+        '''
         index += 1
+
 
 
 
@@ -92,16 +102,3 @@ def define_category(categories: list):
         f.write('\n'.join(categories))
     f.close()
 
-
-def get_smaller_czi(path_to_czi_file):
-    anim = scaffan.image.AnnotatedImage(path=path_to_czi_file)
-
-    for idx in range(len(anim.annotations)):
-        view = anim.get_full_view(
-            pixelsize_mm=[0.0003, 0.0003]
-
-        )  # wanted pixelsize in mm in view
-        view = anim.get_views([idx])  # vybiram, jakou chci zobrazit anotaci
-        img = view[0].get_raster_image()
-        skimage.io.imsave(os.path.join('C:\\Users\\janbu\\GitHub\\COCO_format\\src\\images', str(idx).zfill(4) + ".jpg"), img)
-        idx += 1
