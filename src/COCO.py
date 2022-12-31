@@ -328,3 +328,8 @@ def create_zip_directory(directory_to_zip: Path, zip_dir_name):
                 file_path = os.path.join(root, file)
                 zipf.write(file_path, file_path[len_dir_path:])
     zipf.close()
+
+def move_directory(original_path, target_path):
+    if os.path.exists(os.path.join(target_path)):
+        shutil.rmtree(target_path)
+    shutil.move(os.path.join(original_path), os.path.join(target_path))
