@@ -6,7 +6,8 @@ import argparse
 import COCO, czi_to_jpg
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
+    '''
+     parser = argparse.ArgumentParser(
         prog='COCO format',
         description='Creates COCO from .czi files',
         epilog='Write a path to directory, where .czi files with annotations are saved.')
@@ -14,16 +15,15 @@ if __name__ == '__main__':
                         help='a path to directory, where .czi files with annotations are saved')
 
     args = parser.parse_args()
-
-    # Loading .czi annotations
-    '''
-    path_annotations = Path(
-        r"H:\BP\data\dataset_blue\czi_files_train"
-    )  # path to main directory, that is where .czi files are
-    '''
-
+    
     # From CMD
     path_annotations = args.path
+    '''
+
+    # Loading .czi annotations
+    path_annotations = Path(
+        r"G:\Můj disk\reticular_fibers_testovaci"
+    )  # path to main directory, that is where .czi files are
 
     if os.path.exists(path_annotations):
         # Creating .jpg dataset
