@@ -153,21 +153,24 @@ def get_annotations_properties(czi_files_directory: Path, pixelsize_mm: list):
             x_px_list = (np.asarray(annotations[j]["x_mm"]) / pixelsize_mm[0]).tolist()
             y_px_list = (np.asarray(annotations[j]["y_mm"]) / pixelsize_mm[1]).tolist()
 
-            x_px_min = float(math.floor(np.min(x_px_list)))
-            y_px_min = float(math.floor(np.min(y_px_list)))
-            width = float(math.floor(np.max(x_px_list)) - x_px_min)
-            height = float(math.floor(np.max(y_px_list)) - y_px_min)
+            x_px_list_transform = (np.array(x_px_list) - np.min(x_px_list)).tolist()
+            y_px_list_transform = (np.array(y_px_list) - np.min(y_px_list)).tolist()
 
-            bbox = [x_px_min, y_px_min, width, height]
+            x_px_min_transform = float(math.floor(np.min(x_px_list_transform)))
+            y_px_min_transform = float(math.floor(np.min(y_px_list_transform)))
+            width = float(math.floor(np.max(x_px_list_transform)) - x_px_min_transform)
+            height = float(math.floor(np.max(y_px_list_transform)) - y_px_min_transform)
+
+            bbox = [x_px_min_transform, y_px_min_transform, width, height]
 
             # polygon_area = count_polygon_area(np.array(x_px_list) * 0.0003, np.array(y_px_list) * 0.0003) # in mm
             polygon_area = count_polygon_area(
-                np.array(x_px_list), np.array(y_px_list)
+                np.array(x_px_list_transform), np.array(y_px_list_transform)
             )  # in pixels
-            x_px_list = np.asarray(x_px_list)
-            for i in range(len(x_px_list)):
-                xy_px_list.append(x_px_list[i])
-                xy_px_list.append(y_px_list[i])
+            x_px_list_transform = np.asarray(x_px_list_transform)
+            for i in range(len(x_px_list_transform)):
+                xy_px_list.append(x_px_list_transform[i])
+                xy_px_list.append(y_px_list_transform[i])
 
             segmentation = xy_px_list
 

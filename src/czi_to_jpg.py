@@ -72,7 +72,7 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
         anim = scaffan.image.AnnotatedImage(path=fn_str)
 
         for idx in range(len(anim.annotations)):
-            view = anim.get_views([idx])  # vybiram, jakou chci zobrazit anotaci
+            view = anim.get_views([idx], pixelsize_mm=[0.0003, 0.0003])  # vybiram, jakou chci zobrazit anotaci
             img = view[0].get_raster_image()
             skimage.io.imsave(os.path.join('C:\\Users\\janbu\\GitHub\\COCO_format\\src\\images', str(counter).zfill(4) + ".jpg"), img)
             counter += 1
