@@ -141,55 +141,56 @@ def get_annotations_properties(czi_files_directory: Path, pixelsize_mm: list):
             break
 
         anim = scaffan.image.AnnotatedImage(path=str(filename_path))
-        view = anim.get_full_view(
-            pixelsize_mm=[0.0003, 0.0003]
-        )  # wanted pixelsize in mm in view
-        view = anim.get_views([0])
-        annotations = view[0].annotations
+        if (len(anim.annotations) > 0):
+            view = anim.get_full_view(
+                pixelsize_mm=[0.0003, 0.0003]
+            )  # wanted pixelsize in mm in view
+            view = anim.get_views([0])
+            annotations = view[0].annotations
 
-        for j in range(len(annotations)):
-            xy_px_list = []
+            for j in range(len(annotations)):
+                xy_px_list = []
 
-            x_px_list = (np.asarray(annotations[j]["x_mm"]) / pixelsize_mm[0]).tolist()
-            y_px_list = (np.asarray(annotations[j]["y_mm"]) / pixelsize_mm[1]).tolist()
+                x_px_list = (np.asarray(annotations[j]["x_mm"]) / pixelsize_mm[0]).tolist()
+                y_px_list = (np.asarray(annotations[j]["y_mm"]) / pixelsize_mm[1]).tolist()
 
-            x_px_list_transform = (np.array(x_px_list) - np.min(x_px_list)).tolist()
-            y_px_list_transform = (np.array(y_px_list) - np.min(y_px_list)).tolist()
+                x_px_list_transform = (np.array(x_px_list) - np.min(x_px_list)).tolist()
+                y_px_list_transform = (np.array(y_px_list) - np.min(y_px_list)).tolist()
 
-            x_px_min_transform = float(math.floor(np.min(x_px_list_transform)))
-            y_px_min_transform = float(math.floor(np.min(y_px_list_transform)))
-            width = float(math.floor(np.max(x_px_list_transform)) - x_px_min_transform)
-            height = float(math.floor(np.max(y_px_list_transform)) - y_px_min_transform)
+                x_px_min_transform = float(math.floor(np.min(x_px_list_transform)))
+                y_px_min_transform = float(math.floor(np.min(y_px_list_transform)))
+                width = float(math.floor(np.max(x_px_list_transform)) - x_px_min_transform)
+                height = float(math.floor(np.max(y_px_list_transform)) - y_px_min_transform)
 
-            bbox = [x_px_min_transform, y_px_min_transform, width, height]
+                bbox = [x_px_min_transform, y_px_min_transform, width, height]
 
-            # polygon_area = count_polygon_area(np.array(x_px_list) * 0.0003, np.array(y_px_list) * 0.0003) # in mm
-            polygon_area = count_polygon_area(
-                np.array(x_px_list_transform), np.array(y_px_list_transform)
-            )  # in pixels
-            x_px_list_transform = np.asarray(x_px_list_transform)
-            for i in range(len(x_px_list_transform)):
-                xy_px_list.append(x_px_list_transform[i])
-                xy_px_list.append(y_px_list_transform[i])
+                # polygon_area = count_polygon_area(np.array(x_px_list) * 0.0003, np.array(y_px_list) * 0.0003) # in mm
+                polygon_area = count_polygon_area(
+                    np.array(x_px_list_transform), np.array(y_px_list_transform)
+                )  # in pixels
+                x_px_list_transform = np.asarray(x_px_list_transform)
+                for i in range(len(x_px_list_transform)):
+                    xy_px_list.append(x_px_list_transform[i])
+                    xy_px_list.append(y_px_list_transform[i])
 
-            segmentation = xy_px_list
+                segmentation = xy_px_list
 
-            # segmentation[0::2]
-            # segmentation[1::2]
-            # np.max(x_px_list)
+                # segmentation[0::2]
+                # segmentation[1::2]
+                # np.max(x_px_list)
 
-            annotation_dictionary = {
-                "id": annotation_id,
-                "image_id": image_id,
-                "category_id": category_id,
-                "segmentation": [segmentation],  # RLE or [polygon]
-                "area": polygon_area,  # Shoelace formula
-                "bbox": bbox,  # [x, y, width, height]
-                "iscrowd": 0,
-            }
-            annotation_id += 1
-            image_id += 1
-            list_annotation_dictionaries.append(annotation_dictionary)
+                annotation_dictionary = {
+                    "id": annotation_id,
+                    "image_id": image_id,
+                    "category_id": category_id,
+                    "segmentation": [segmentation],  # RLE or [polygon]
+                    "area": polygon_area,  # Shoelace formula
+                    "bbox": bbox,  # [x, y, width, height]
+                    "iscrowd": 0,
+                }
+                annotation_id += 1
+                image_id += 1
+                list_annotation_dictionaries.append(annotation_dictionary)
 
         index += 1
 
