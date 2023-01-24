@@ -1,4 +1,4 @@
-import javaobj
+import javaobj.v1 as javaobj
 
 def read_file(filename:str):
     file = open(filename, "rb")
@@ -10,6 +10,5 @@ if __name__ == '__main__':
     filename = "data.qpdata"
     jobj = read_file(filename)
     pobj = javaobj.loads(jobj)
-    test = jobj.decode("utf-8")
     print(pobj)
 
