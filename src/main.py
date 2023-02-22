@@ -6,7 +6,6 @@ import argparse
 import COCO, czi_to_jpg
 
 if __name__ == '__main__':
-    '''
     parser = argparse.ArgumentParser(
         prog='COCO format',
         description='Creates COCO from .czi files',
@@ -24,13 +23,12 @@ if __name__ == '__main__':
     # From CMD
     path_annotations = args.path_czi
     path_COCO = args.path_COCO
-    '''
 
     # Loading .czi annotations
-    path_annotations = Path(
-        r"H:\reticular_fibers_testovaci"
-    )  # path to main directory, that is where .czi files are
-    path_COCO = r"C:\Users\janbu\Desktop\moje_COCO"
+    #path_annotations = Path(
+        #r"H:\reticular_fibers_testovaci"
+    #)  # path to main directory, that is where .czi files are
+    #path_COCO = r"C:\Users\janbu\Desktop\moje_COCO"
 
 
     if os.path.exists(path_annotations):
