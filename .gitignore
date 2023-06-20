@@ -1,4 +1,8 @@
+__pycache__/
+*.py[cod]
+*$py.class
 
+*.pyc
 *.jpg
 *.zip
 src/images/categories.txt
