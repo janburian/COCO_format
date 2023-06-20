@@ -2,13 +2,9 @@ from pathlib import Path
 import sys
 import skimage.io
 import os
+import setup_tools
 
-try:
-    import setup
-except ImportError:
-    from . import setup
-
-path_to_script = Path("~/projects/scaffan/").expanduser()
+path_to_script = Path("~/GitHub/scaffan/").expanduser()
 sys.path.insert(0, str(path_to_script))
 import scaffan.image
 
@@ -18,8 +14,8 @@ def delete_content_folders():
     Deletes content from folders
     :return:
     """
-    setup.delete_content_folder(os.path.join(Path(__file__).parent, "images"))
-    setup.delete_content_folder(os.path.join(Path(__file__).parent, "COCO_dataset"))
+    setup_tools.delete_content_folder(os.path.join(Path(__file__).parent, "images"))
+    setup_tools.delete_content_folder(os.path.join(Path(__file__).parent, "COCO_dataset"))
 
 def get_filenames(path: Path, accepted_extensions: list):
     """
@@ -54,7 +50,7 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
     """
 
     delete_content_folders()
-    setup.delete_zip_files()
+    setup_tools.delete_zip_files()
 
     images_directory = create_directory(imgs_directory_name)
 
@@ -86,7 +82,8 @@ def export_czi_to_jpg(czi_directory_path: Path, imgs_directory_name: str):
             pixelsize_mm=[0.0003, 0.0003]
         )  # wanted pixelsize in mm in view
         img = view.get_raster_image()
-        skimage.io.imsave(os.path.join(images_directory, str(index).zfill(4) + ".jpg"), img)
+        # skimage.io.imsave(os.path.join(images_directory, str(index).zfill(4) + ".jpg"), img)
+        skimage.io.imsave(os.path.join(images_directory, str(Path(czi_files_names[index]).stem) + ".jpg"), img)
 
         index += 1
 

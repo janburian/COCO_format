@@ -10,9 +10,12 @@ import shutil
 import ntpath
 import zipfile
 
-path_to_script = Path("~/projects/scaffan/").expanduser()
+path_to_script = Path("~/GitHub/scaffan/").expanduser()
 sys.path.insert(0, str(path_to_script))
 import scaffan.image
+print(scaffan.__version__)
+print(scaffan.__file__)
+print(os.path.exists(path_to_script))
 from datetime import date
 
 
